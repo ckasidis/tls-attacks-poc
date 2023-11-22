@@ -54,13 +54,13 @@ func Attack(secret []byte) {
 			thirdRequest := aescbc.Encrypt(xored, key, secondRequestLastBlock)
 			// Attacker save C3
 			result := aescbc.SplitBlocks([]byte(hex.EncodeToString(thirdRequest)), aescbc.BlockSizeHex)
-			// Attacker compare C2 with C3
-			// C2 = Ek(C1n XOR (XXXX XXXX XXXX XXXT))
-			// P = C1n XOR C2n XOR (XXXX XXXX XXXX XXXT)
-			// C3 = Ek(C2n XOR P)
-			// C3 = Ek(C2n XOR C1n XOR C2n XOR (XXXX XXXX XXXX XXXT))
-			// C3 = Ek(C1n XOR (XXXX XXXX XXXX XXXT))
-			// if C2 and C3 is equal, the guessed byte T is correct
+			// Attacker compare C2_0 with C3_0
+			// C2_0 = Ek(C1_n XOR (XXXX XXXX XXXX XXXT))
+			// P = C1_n XOR C2_n XOR (XXXX XXXX XXXX XXXT)
+			// C3_0 = Ek(C2_n XOR P)
+			// C3_0 = Ek(C2_n XOR C1_n XOR C2_n XOR (XXXX XXXX XXXX XXXT))
+			// C3_0 = Ek(C1_n XOR (XXXX XXXX XXXX XXXT))
+			// if C2_0 and C3_0 is equal, the guessed byte T is correct
 			if bytes.Equal(result[0], original[0]) {
 				fmt.Printf("%s == %s - ", original[0], result[0])
 				fmt.Fprintf(os.Stdout, "Found byte %s%c%s\n", utils.ColorCyan, i, utils.ColorNone)
